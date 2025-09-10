@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>COP 4331 LAMP Stack Demo</title>
+	<title>Team 17 Contact Management</title>
 	<script type="text/javascript" src="js/code.js"></script>
     <link href="css/styles.css" rel="stylesheet">	
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
@@ -15,7 +15,7 @@
 </head>
 <body>
 
-<h1 id="title">COP 4331 LAMP Stack Demo</h1>
+<h1 id="title">Team 17 Contact Manager</h1>
 
 <div id="loggedInDiv">
 	<span id="userName"></span><br />
@@ -25,15 +25,27 @@
 <div id="accessUIDiv">
 	<br />
 
-	<input type="text" id="searchText" placeholder="Color To Search For"/>
-	<button type="button" id="searchColorButton" class="buttons" onclick="searchColor();"> Search Color </button><br />
-	<span id="colorSearchResult"></span>
-	<p id="colorList">
-	</p><br /><br />
+	<input type="text" id="searchText" placeholder="Contact To Search For" autocomplete="off">
+	<button type="button" id="searchContactButton" class="buttons" onclick="searchContact();"> Search Contact </button>
+	<span id="contactSearchResult"></span>
+	<p id="contactList">
+	</p>
 
-	<input type="text" id="colorText" placeholder="Color To Add">
-	<button type="button" id="addColorButton" class="buttons" onclick="addColor();"> Add Color </button><br />
-	<span id="colorAddResult"></span>
+	<input type="text" id="addContactText" placeholder="Contact To Add" autocomplete="off">
+	<button type="button" id="addContactButton" class="buttons" onclick="addContact();"> Add Contact </button><br />
+	<span id="contactAddResult"></span>
+
+
+	<input type="text" id="deleteContactText" placeholder="Contact To Delete" autocomplete="off">
+	<button type="button" id="deleteContactButton" class="buttons" onclick="deleteContact();"> Delete Contact </button><br><br>
+	<span id="contactDelete"></span>
+	<span id="contactDeleteResult"></span>
+
+
+	<input type="text" id="editContactText" placeholder="Contact To Edit" autocomplete="off">
+	<button type="button" id="editContactButton" class="buttons" onclick="editContact();"> Edit Contact </button><br />
+	
+
 </div>
 
 </body>
