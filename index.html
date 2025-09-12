@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>COP 4331 LAMP Stack Demo</title>
+	<title>TEAM 17 Contact Manager</title>
 	<script type="text/javascript" src="js/md5.js"></script>
 	<script type="text/javascript" src="js/code.js"></script>
     <link href="css/styles.css" rel="stylesheet">	
@@ -8,15 +8,23 @@
 </head>
 <body>
 
-<h1 id="title">COP 4331 LAMP Stack Demo</h1>
+<h1 id="title">Team 17 Contact Manager</h1>
 
 <div id="loginDiv">
-	<span id="inner-title">PLEASE LOG IN</span>
-	<input type="text" id="loginName" placeholder="Username" /><br />
-	<input type="password" id="loginPassword" placeholder="Password"/><br />
-	<button type="button" id="loginButton" class="buttons" onclick="doLogin();"> Do It </button>
-	<span id="loginResult"></span>
+	<form onsubmit="doLogin(); return false;">
+	  <span id="inner-title">PLEASE LOG IN</span>
+	  <input type="text" id="loginName" placeholder="Username" autocomplete="off">
+          <input type="password" id="loginPassword" placeholder="Password" autocomplete="off"><br />
+          <button type="submit" id="loginButton" class="buttons"> Do It </button>
+	  <span id="loginResult"></span>
+	</form>
 </div>
+
+<div id="registerDiv">
+	<p id="registerMessage">If not registered, please register.</p>
+	<button type="register" id="registerButton" class="buttons" onclick="goRegister();">Register</button>
+	<span id="userAddResult"></span>
+	<span id="registerButtonTest"></span>
 
 </body>
 </html>
