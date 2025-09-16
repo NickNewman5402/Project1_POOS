@@ -106,11 +106,13 @@ function doRegister()
 		{
 			if(this.readyState == 4 && this.status == 200)
 			{
+
 				document.getElementById("userAddResult").innerHTML = 
         `User has been added. Please return to login page.<br>
          <button type="button" class="buttons" onclick="window.location.href='index.html';">
              Login
          </button>`;
+
 			}
 		};
 		xhr.send(jsonPayload);
