@@ -106,11 +106,13 @@ function doRegister()
 		{
 			if(this.readyState == 4 && this.status == 200)
 			{
-				document.getElementById("userAddResult").innerHTML = " User has been added. Please return to login page.";
-				document.getElementById("firstName").value = "";
-				document.getElementById("lastName").value = "";
-				document.getElementById("login").value = "";
-				document.getElementById("password").value = "";
+
+				document.getElementById("userAddResult").innerHTML = 
+        `User has been added. Please return to login page.<br>
+         <button type="button" class="buttons" onclick="window.location.href='index.html';">
+             Login
+         </button>`;
+
 			}
 		};
 		xhr.send(jsonPayload);
@@ -285,101 +287,124 @@ function addContact()
 	
 }
 
-function deleteContact()
+function deleteContact() 
 {
-	// We will pull in a name or some part of a name a lot like search (input box) 
-	let name = document.getElementById("deleteContactText").value;
+  const name = document.getElementById("deleteContactText").value.trim();
 
-	// we will run this against the database via php searchContact
-	// If more than 1 contact is found we will need them to be more specific (display this in a span spot)
-	// Once 1 name is returned we can display it and allow them to delete (confirm button)
+  // if input box is empty
+  if (!name) 
+  {
+    document.getElementById("deleteList").innerHTML = "";
+    document.getElementById("contactDeleteResult").innerHTML = "Please enter a search term.";
+    return;
+  }
 
-	// If the user enters nothing in the search box
-	if(name.length === 0)
+  // clear out previous results
+  document.getElementById("contactDeleteResult").innerHTML = "";
+  document.getElementById("deleteList").innerHTML = "";
+
+  // setting url for HTTP request and payload to be sent
+  const url = urlBase + "/SearchContacts." + extension;
+  const jsonPayload = JSON.stringify({ search: name, userId: userId });
+
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", url, true);
+  xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+  xhr.onreadystatechange = function () 
+  {
+    if (this.readyState !== 4) return;
+
+    if (this.status !== 200) 
 	{
-		document.getElementById("deleteList").innerHTML = "";
-		document.getElementById("contactDeleteResult").innerHTML = "Please enter a search term.";
-		return;
-	}
+      document.getElementById("contactDeleteResult").innerHTML = "Search failed (HTTP " + this.status + ").";
+      return;
+    }
 
-	// This clears both mentioned fields  
-	document.getElementById("contactDeleteResult").innerHTML = "";
-	document.getElementById("deleteList").innerHTML = "";	
+    const jsonObject = JSON.parse(xhr.responseText);
+
+    if (jsonObject.error && jsonObject.error.length > 0) 
+	{
+      document.getElementById("contactDeleteResult").innerHTML = jsonObject.error;
+      return;
+    }
+
+    const results = jsonObject.results || [];
+    
+	if (results.length === 0) 
+	{
+      document.getElementById("contactDeleteResult").innerHTML = "No matching contacts found.";
+      return;
+    }
+
+    let html = "";
+    
+	for (let i = 0; i < results.length; i++) 
+	{
+      const entry = String(results[i]);               // e.g., contains "ID: 3"
+      const m = entry.match(/ID:\s*(\d+)/i);
+      
+	  let id;
+
+      if (m) 
+	  {
+		id = m[1];
+	  } 
+	  
+	  else 
+	  {
+		id = null;
+	  }
+
+
+      html += `
+        <div class="contactRow">
+          <div>${entry}</div>
+          ${id ? `<button class="buttons" onclick="confirmDelete(${id})">Delete</button>` : ""}
+        </div>
+        <br>
+      `;
+    }
+    
+	document.getElementById("deleteList").innerHTML = html;
+
+    if (results.length > 1) 
+	{
+      document.getElementById("contactDeleteResult").innerHTML = "Multiple matches found. Click the one you want to delete.";
+    }
+
+  };
+  xhr.send(jsonPayload);
+}
+
+function confirmDelete(contactId) 
+{
+  if (!contactId) return;
+  if (!confirm("Delete this contact?")) return;
+
+  const url = urlBase + "/DeleteContact." + extension;
+  const jsonPayload = JSON.stringify({ contactId: contactId, userId: userId });
+
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", url, true);
+  xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+  xhr.onreadystatechange = function () 
+  {
+    if (this.readyState !== 4) return;
+
+    if (this.status === 200) 
+	{
+      document.getElementById("contactDeleteResult").innerHTML = "Contact deleted.";
+      document.getElementById("deleteList").innerHTML = "";
+      // Optional: refresh other list
+      const term = document.getElementById("searchText")?.value?.trim();
+      if (term) searchContact(term);
+    } 
 	
-	let deleteList = "";
-	
-	// The first term before the : is the term that must match the terms in the php (the key). The term after the :
-	// must match the term in this function (the value).
-	// Here I pull the search term from the html by way of "deleteContactText". This then gets associated with "name"
-	// in this function. So I then take that term and make it the "value" of the key:value pair "search:name" 
-	// SO {php_term:js_term}
-	// userId is set in Login() as a global variable and maintained
-	let tmp = {search:name, userId:userId};
-	let jsonPayload = JSON.stringify(tmp);
+	else 
+	{
+      document.getElementById("contactDeleteResult").innerHTML = "Delete failed (HTTP " + this.status + ").";
+    }
 
-	let url = urlBase + '/DeleteContact.' + extension;
-
-	let xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try
-		{
-			xhr.onreadystatechange = function() 
-			{
-				if (this.readyState == 4 && this.status == 200) 
-				{
-				
-					// response is returned from server and stored in jsonObject
-					let jsonObject = JSON.parse( xhr.responseText );
-		
-					
-					// If backend returns an error message
-					if(jsonObject.error && jsonObject.error.length > 0)
-					{
-						document.getElementById("contactDeleteResult").innerHTML = jsonObject.error;
-						document.getElementById("deleteList").innerHTML = "";
-						return;
-					}
-
-
-					// If an array is returned but there are no results
-					if(!jsonObject.results || jsonObject.results.length === 0)
-					{
-						document.getElementById("contactDeleteResult").innerHTML = "No Matching contacts found.";
-						document.getElementById("deleteList").innerHTML = "";
-						return;
-					}
-
-					// cycles through array of strings returned by database
-					for( let i=0; i<jsonObject.results.length; i++ )
-					{
-						// Array of strings is printed out
-						deleteList += jsonObject.results[i];
-
-						if( i < jsonObject.results.length - 1 )
-						{
-							// formatting for returned strings
-							deleteList += "<br><br>\r\n";
-						}
-
-					}
-					
-					// prints contacts out to color.html below delete contact input box
-					document.getElementsByTagName("p")[1].innerHTML = deleteList;
-				}
-			};
-			// send key value pairs to database
-			xhr.send(jsonPayload);
-		}
-
-		catch(err)
-		{
-			document.getElementById("contactDeleteResult").innerHTML = err.message;
-			document.getElementById("deleteList").innerHTML = "";
-		}
-
-		//
-		//
-		//
-
-	}
+  };
+  xhr.send(jsonPayload);
+}
