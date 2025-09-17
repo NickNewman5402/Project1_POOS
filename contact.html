@@ -1,0 +1,93 @@
+<html>
+<head>
+	<title>Team 17 Contact Management</title>
+	<script type="text/javascript" src="js/code.js"></script>
+    <link href="css/styles.css" rel="stylesheet">	
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+	
+	<script type="text/javascript">
+	document.addEventListener('DOMContentLoaded', function() 
+	{
+		readCookie();
+	}, false);
+	</script>
+	
+</head>
+<body>
+
+<h1 id="title">Team 17 Contact Manager</h1>
+
+<div id="loggedInDiv">
+	<span id="userName"></span><br />
+	<button type="button" id="logoutButton" class="buttons" onclick="doLogout();"> Log Out </button>
+</div>
+
+<div id="accessUIDiv">
+	<br />
+
+	<input type="text" id="searchText" placeholder="Contact To Search For" autocomplete="off">
+	<button type="button" id="searchContactButton" class="buttons" onclick="searchContact();"> Search Contact </button>
+	<span id="contactSearchResult"></span>
+	<p id="contactList">
+	</p>
+
+	<button type="button" id="addContactDropdown" class="buttons" onclick="toggleAddContactForm();"> Add Contact ▼ </button>
+	<div id="addContactForm">
+		<input type="text" id="firstNameText" placeholder="First Name" autocomplete="off">
+		<input type="text" id="lastNameText" placeholder="Last Name" autocomplete="off">
+		<input type="email" id="emailText" placeholder="Email" autocomplete="off">
+		<input type="text" id="phoneText" placeholder="Phone Number" autocomplete="off">
+		<button type="button" id="addContactButton" class="buttons" onclick="addContact();"> Submit New Contact </button>
+	</div>
+    <span id="contactAddResult"></span>
+    <script> //script to make it a dropdown menu
+function toggleAddContactForm() {
+	const formDiv = document.getElementById("addContactForm");
+	const btn = document.getElementById("addContactDropdown"); 
+
+	if (formDiv.style.display === "none" || formDiv.style.display === "") {
+		formDiv.style.display = "block";
+		btn.innerText = "Add Contact ▲";  // changes button text when the dropdown is open
+	} else {
+		formDiv.style.display = "none";
+		btn.innerText = "Add Contact ▼";  // revert the text when the dropdown is closed
+	}
+}
+</script>
+	
+
+<button type="button" id="deleteContactDropdown" class="buttons" onclick="toggleDeleteContactForm();"> Delete Contact ▼ </button>
+
+<div id="deleteContactForm" style="display: none;">
+	<input type="text" id="deleteFirstName" placeholder="First Name" autocomplete="off">
+	<input type="text" id="deleteLastName" placeholder="Last Name" autocomplete="off">
+	<button type="button" id="deleteContactButton" class="buttons" onclick="deleteContact();"> Delete Contact </button>
+</div>
+
+<span id="contactDeleteResult"></span>
+
+ 
+<script>// Script to make the button be a dropdown menu
+function toggleDeleteContactForm() {
+	const formDiv = document.getElementById("deleteContactForm");
+	const btn = document.getElementById("deleteContactDropdown");
+
+	if (formDiv.style.display === "none" || formDiv.style.display === "") {
+		formDiv.style.display = "block";
+		btn.innerText = "Delete Contact ▲"; // delete dropdown is open
+	} else {
+		formDiv.style.display = "none";
+		btn.innerText = "Delete Contact ▼"; // delete dropdown is closed
+	}
+}
+</script>
+
+
+	<input type="text" id="editContactText" placeholder="Contact To Edit" autocomplete="off">
+	<button type="button" id="editContactButton" class="buttons" onclick="editContact();"> Edit Contact </button><br />
+	
+
+</div>
+
+</body>
+</html>
