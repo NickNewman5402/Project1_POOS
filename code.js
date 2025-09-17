@@ -134,7 +134,7 @@ function doLogout()
 function searchContact()
 {
 	
-	searchClearFunctions();
+	//searchClearFunctions();
 
 	let srch = document.getElementById("searchText").value;
 
@@ -221,7 +221,7 @@ document.getElementsByTagName("p")[0].innerHTML = contactList;
 function addContact()
 {
 
-  addClearFunctions();
+  //addClearFunctions();
 
   // Pull values from HTML inputs
   const newFirstName = document.getElementById("firstNameText").value.trim();
@@ -302,7 +302,7 @@ function addContact()
 function deleteContact() 
 {
 
-  deleteClearFunctions();
+  //deleteClearFunctions();
 
   const name = document.getElementById("deleteContactText").value.trim();
  
@@ -396,6 +396,82 @@ function deleteContact()
 function editContact()
 {
 
+  //editClearFunctions();
+
+  // Pull values from HTML inputs
+  const newFirstName = document.getElementById("firstNameText").value.trim();
+  const newLastName  = document.getElementById("lastNameText").value.trim();
+  const newPhone     = document.getElementById("phoneText").value.trim();
+  const newEmail     = document.getElementById("emailText").value.trim();
+
+  const result = document.getElementById("contactAddResult");
+
+  // Build payload
+  const tmp = { userId: userId };
+  if (newFirstName) tmp.jsNewFirst = newFirstName;
+  if (newLastName)  tmp.jsNewLast  = newLastName;
+  if (newPhone)     tmp.jsNewPhone = newPhone;
+  if (newEmail)     tmp.jsNewEmail = newEmail;
+
+  const jsonPayload = JSON.stringify(tmp);
+
+  // POST request to backend
+  const url = urlBase + "/EditContact." + extension;
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", url, true);
+  xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+
+  if (result) 
+	result.textContent = "Adding…";
+
+  xhr.onreadystatechange = function() 
+  {
+    if (this.readyState !== 4) return;
+
+    try
+	{
+      if (this.status === 200) 
+	  {
+        const resp = JSON.parse(xhr.responseText || "{}");
+      
+		if (resp.error)
+		{
+          if (result)
+		  { 
+			result.textContent = "Error: " + resp.error;
+          	return;
+		  }
+        }
+
+        if (result) 
+			result.textContent = "Contact added successfully.";
+
+        // Clear inputs after success
+        document.getElementById("firstNameText").value = "";
+        document.getElementById("lastNameText").value  = "";
+        document.getElementById("phoneText").value     = "";
+        document.getElementById("emailText").value     = "";
+      } 
+	  
+	  else 
+	  {
+        if (result) result.textContent = "Server error (" + this.status + ").";
+      }
+
+    } 
+	
+	catch (e) 
+	{
+      if (result) result.textContent = "Unexpected response.";
+      console.error(e);
+    }
+  };
+
+  xhr.onerror = function() {
+    if (result) result.textContent = "Network error.";
+  };
+
+  xhr.send(jsonPayload);
 }
 
 /*************************************************************HELPER FUNCTIONS****************************************************/
@@ -474,24 +550,26 @@ function confirmDelete(contactId)
   xhr.send(jsonPayload);
 }
 
+// text fields and results fields cleared
+/*
 function searchClearFunctions()
 {
-	/*// Add
+	//Add
 	document.getElementById("addContactText").value = "";
 	document.getElementById("addList").innerHTML = "";
 	document.getElementById("contactaddResult").innerHTML = "";
-	//*/
+
 
 	// Delete
 	document.getElementById("deleteContactText").value = "";
   	document.getElementById("deleteList").innerHTML = "";
 	document.getElementById("contactDeleteResult").innerHTML = "";
 
-	/*// Edit
+	// Edit
 	document.getElementById("editContactText").value = "";
 	document.getElementById("editList").innerHTML = "";
 	document.getElementById("contactEditResult").innerHTML = "";
-	//*/
+	
 }
 
 function addClearFunctions()
@@ -507,11 +585,11 @@ function addClearFunctions()
 	document.getElementById("deleteList").innerHTML = "";
 	document.getElementById("contactDeleteResult").innerHTML = "";
 
-	/*// Edit
+	// Edit
 	document.getElementById("editContactText").value = "";
 	document.getElementById("editList").innerHTML = "";
 	document.getElementById("contactEditResult").innerHTML = "";
-	//*/
+	
 
 }
 
@@ -523,17 +601,17 @@ function deleteClearFunctions()
   	document.getElementById("contactList").innerHTML = "";
 	document.getElementById("contactSearchResult").innerHTML = "";
 
-	/*// Add
+	// Add
 	document.getElementById("addContactText").value = "";
   	document.getElementById("addList").innerHTML = "";
 	document.getElementById("contactaddResult").innerHTML = "";	
-	//*/
+	
 
-	/*// Edit
+	// Edit
 	document.getElementById("editContactText").value = "";
   	document.getElementById("editList").innerHTML = "";
 	document.getElementById("contactEditResult").innerHTML = "";	
-	//*/
+	
 
 }
 
@@ -545,11 +623,11 @@ function editClearFunctions()
   	document.getElementById("contactList").innerHTML = "";
 	document.getElementById("contactSearchResult").innerHTML = "";
 
-	/*// Add
+	// Add
 	document.getElementById("addContactText").value = "";
     document.getElementById("addList").innerHTML = "";
 	document.getElementById("contactaddResult").innerHTML = "";	
-	//*/
+	
 
 	// Delete
 	document.getElementById("deleteContactText").value = "";
@@ -558,3 +636,4 @@ function editClearFunctions()
 
 
 }
+	*/
