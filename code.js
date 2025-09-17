@@ -299,7 +299,6 @@ function addContact()
   xhr.send(jsonPayload);
 }
 
-
 function deleteContact() 
 {
 
