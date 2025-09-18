@@ -5,7 +5,7 @@
 	$lastName = $inData["jsNewLast"];
 	$phoneNum = $inData["jsNewPhone"];
 	$email = $inData["jsNewEmail"];
-	$userId = $inData["userId"];//needs the label form the js JSON
+	$userId = $inData["userId"];
 
 	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
 	if ($conn->connect_error) 
@@ -40,6 +40,7 @@
 	}
 	
 ?>
+
 
 
 
