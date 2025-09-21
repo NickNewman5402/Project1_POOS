@@ -2,8 +2,8 @@
 <head>
 	<title>Team 17 Contact Management</title>
 	<script type="text/javascript" src="js/code.js"></script>
-    <link href="css/styles.css" rel="stylesheet">	
-    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    	<link href="css/styles.css" rel="stylesheet">	
+    	<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 	
 	<script type="text/javascript">
 	document.addEventListener('DOMContentLoaded', function() 
@@ -15,7 +15,7 @@
 </head>
 <body>
 
-<h1 id="title">Team 17 Contact Manager</h1>
+<h1 id="title" style="color:red">Team 17 Contact Manager</h1>
 
 <div id="loggedInDiv">
 	<span id="userName"></span><br />
@@ -24,19 +24,40 @@
 
 <div id="accessUIDiv">
 	<br />
-
-	<input type="text" id="searchText" placeholder="Contact To Search For" autocomplete="off">
-	<button type="button" id="searchContactButton" class="buttons" onclick="searchContact();"> Search Contact </button>
+	
+	<button type="button" id="searchContactDropdown" class="buttons" onclick="toggleSearchContactForm();"> Search Contact &#9660; </button>
+	<div id="searchContactForm" style="display: none;">
+		<input type="text" id="firstNameSearch" placeholder="First Name To Search" autocomplete="off">
+		<input type="text" id="lastNameSearch" placeholder="Last Name To Search" autocomplete="off">
+		<button type="button" id="searchContactButton" class="buttons" onclick="searchContact();"> Search For This Contact </button>
+	</div>
+	
 	<span id="contactSearchResult"></span>
+
 	<p id="contactList">
 	</p>
+	
+	<script> //script to make it a dropdown menu
+	function toggleSearchContactForm() {
+		const formDiv = document.getElementById("searchContactForm");
+		const btn = document.getElementById("searchContactDropdown"); 
 
-	<button type="button" id="addContactDropdown" class="buttons" onclick="toggleAddContactForm();"> Add Contact ▼ </button>
-	<div id="addContactForm">
-		<input type="text" id="firstNameText" placeholder="First Name" autocomplete="off">
-		<input type="text" id="lastNameText" placeholder="Last Name" autocomplete="off">
-		<input type="email" id="emailText" placeholder="Email" autocomplete="off">
-		<input type="text" id="phoneText" placeholder="Phone Number" autocomplete="off">
+		if (formDiv.style.display === "none" || formDiv.style.display === "") {
+			formDiv.style.display = "block";
+			btn.innerText = "Close Search Contact " + String.fromCharCode(9650);  // changes button text when the dropdown is open
+		} else {
+			formDiv.style.display = "none";
+			btn.innerText = "Search Contact " + String.fromCharCode(9660);  // revert the text when the dropdown is closed
+		}
+	}
+	</script>
+
+	<button type="button" id="addContactDropdown" class="buttons" onclick="toggleAddContactForm();"> Add Contact &#9660; </button>
+	<div id="addContactForm" style="display: none;">
+		<input type="text" id="firstNameText" placeholder="First Name" autocomplete="off"><br>
+		<input type="text" id="lastNameText" placeholder="Last Name" autocomplete="off"><br>
+		<input type="text" id="emailText" placeholder="Email" autocomplete="off"><br>
+		<input type="text" id="phoneText" placeholder="Phone Number" autocomplete="off"><br>
 		<button type="button" id="addContactButton" class="buttons" onclick="addContact();"> Submit New Contact </button>
 	</div>
     <span id="contactAddResult"></span>
@@ -47,16 +68,16 @@ function toggleAddContactForm() {
 
 	if (formDiv.style.display === "none" || formDiv.style.display === "") {
 		formDiv.style.display = "block";
-		btn.innerText = "Add Contact ▲";  // changes button text when the dropdown is open
+		btn.innerText = "Add Contact " + String.fromCharCode(9650);  // changes button text when the dropdown is open
 	} else {
 		formDiv.style.display = "none";
-		btn.innerText = "Add Contact ▼";  // revert the text when the dropdown is closed
+		btn.innerText = "Add Contact " + String.fromCharCode(9660);  // revert the text when the dropdown is closed
 	}
 }
-</script>
+</script> <br>
 	
 
-<button type="button" id="deleteContactDropdown" class="buttons" onclick="toggleDeleteContactForm();"> Delete Contact ▼ </button>
+<button type="button" id="deleteContactDropdown" class="buttons" onclick="toggleDeleteContactForm();"> Delete Contact &#9660; </button>
 
 <div id="deleteContactForm" style="display: none;">
 	<input type="text" id="deleteFirstName" placeholder="First Name" autocomplete="off">
@@ -67,27 +88,47 @@ function toggleAddContactForm() {
 <span id="contactDeleteResult"></span>
 
  
-<script>// Script to make the button be a dropdown menu
+<script>// Script to make the button to Delete be a dropdown menu
 function toggleDeleteContactForm() {
 	const formDiv = document.getElementById("deleteContactForm");
 	const btn = document.getElementById("deleteContactDropdown");
 
 	if (formDiv.style.display === "none" || formDiv.style.display === "") {
 		formDiv.style.display = "block";
-		btn.innerText = "Delete Contact ▲"; // delete dropdown is open
+		btn.innerText = "Delete Contact " + String.fromCharCode(9650); // delete dropdown is open
 	} else {
 		formDiv.style.display = "none";
-		btn.innerText = "Delete Contact ▼"; // delete dropdown is closed
+		btn.innerText = "Delete Contact " + String.fromCharCode(9660); // delete dropdown is closed
 	}
 }
 </script>
 
-
-	<input type="text" id="editContactText" placeholder="Contact To Edit" autocomplete="off">
-	<button type="button" id="editContactButton" class="buttons" onclick="editContact();"> Edit Contact </button><br />
+<br>
 	
+	<button type="button" id="editContactDropdown" class="buttons" onclick="toggleEditContactForm();"> Edit Contact &#9660 </button><br/>
+
+	<div id="editContactForm" style="display: none;">
+		<input type="text" id="editContactText" placeholder="Contact To Edit" autocomplete="off">
+		<button type="button" id="editContactButton" class="buttons" onclick="editContact();"> Edit Contact </button><br />
+	</div>
+
+	<script>//Script to make the button to Edit be a dropdown menu
+		function toggleEditContactForm() {
+			const formDiv = document.getElementById("editContactForm");
+			const btn = document.getElementById("editContactDropdown");
+
+			if (formDiv.style.display === "none" || formDiv.style.display === "") {
+				formDiv.style.display = "block";
+				btn.innerText = "Edit Contact" + String.fromCharCode(9650); // edit dropdown is open
+			} else {
+				formDiv.style.display = "none";
+				btn.innerText = "Edit Contact" + String.fromCharCode(9660); // edit dropdown is closed
+			}
+	}
+	</script>			
 
 </div>
+<span id="contactEditResult"></span>
 
 </body>
 </html>
