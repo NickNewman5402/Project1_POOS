@@ -1,3 +1,4 @@
+// code.js
 const urlBase = 'http://www.team17.xyz/LAMPAPI';
 const extension = 'php';
 
@@ -133,21 +134,22 @@ function doLogout()
 /**********************************************************MAIN FUNCTIONS*********************************************************/
 function searchContact()
 {
-	
-	//searchClearFunctions();
 
-	let srch = document.getElementById("searchText").value;
+	// let srch = document.getElementById("searchText").value;
 
-	if(srch.length === 0)
+  
+  let firstNameText = document.getElementById("firstNameSearch").value.trim();
+  let lastNameText = document.getElementById("lastNameSearch").value.trim();
+
+	if(firstNameText.length === 0 && lastNameText.length === 0)
 	{
 		document.getElementById("contactList").innerHTML = "";
 		document.getElementById("contactSearchResult").innerHTML = "Please enter a search term.";
 		return;
 	}
 
-	// This clears both mentioned fields  
+	// This clears result field
 	document.getElementById("contactSearchResult").innerHTML = "";
-	document.getElementById("contactList").innerHTML = "";	
 	
 	let contactList = "";
 
@@ -156,7 +158,7 @@ function searchContact()
 	// Here I pull the search term from the html by way of "searchText". This then gets associated with "srch"
 	// in this function. So I then take that term and make it the "value" of the key:value pair.
 	// SO {php_term:js_term}
-	let tmp = {search:srch,userId:userId};
+  let tmp = {firstName:firstNameText, lastName:lastNameText, userId:userId};
 	let jsonPayload = JSON.stringify( tmp );
 
 	let url = urlBase + '/SearchContacts.' + extension;
@@ -178,7 +180,6 @@ function searchContact()
 				if(jsonObject.error && jsonObject.error.length > 0)
 				{
 					document.getElementById("contactSearchResult").innerHTML = jsonObject.error;
-					document.getElementById("contactList").innerHTML = "";
 					return;
 				}
 
@@ -187,7 +188,6 @@ function searchContact()
 				if(!jsonObject.results || jsonObject.results.length === 0)
 				{
 					document.getElementById("contactSearchResult").innerHTML = "No Matching contacts found.";
-					document.getElementById("contactList").innerHTML = "";
 					return;
 				}
 
@@ -204,7 +204,7 @@ function searchContact()
 					}
 				}
 
-document.getElementsByTagName("p")[0].innerHTML = contactList; 
+document.getElementById("contactSearchResult").innerHTML = contactList; 
 			}
 		};
 		xhr.send(jsonPayload);
@@ -213,7 +213,6 @@ document.getElementsByTagName("p")[0].innerHTML = contactList;
 	catch(err)
 	{
 		document.getElementById("contactSearchResult").innerHTML = err.message;
-		document.getElementById("contactList").innerHTML = "";
 	}
 	
 }
@@ -221,7 +220,6 @@ document.getElementsByTagName("p")[0].innerHTML = contactList;
 function addContact()
 {
 
-  //addClearFunctions();
 
   // Pull values from HTML inputs
   const newFirstName = document.getElementById("firstNameText").value.trim();
@@ -247,7 +245,7 @@ function addContact()
   xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 
   if (result) 
-	result.textContent = "Adding…";
+	result.textContent = "Addingâ€¦";
 
   xhr.onreadystatechange = function() 
   {
@@ -302,25 +300,23 @@ function addContact()
 function deleteContact() 
 {
 
-  //deleteClearFunctions();
 
-  const name = document.getElementById("deleteContactText").value.trim();
- 
-  // if input box is empty
-  if (!name) 
+  const firstNameText = document.getElementById("deleteFirstName").value.trim();
+  const lastNameText = document.getElementById("deleteLastName").value.trim();
+  
+	if(firstNameText.length === 0 && lastNameText.length === 0)
   {
-    document.getElementById("deleteList").innerHTML = "";
     document.getElementById("contactDeleteResult").innerHTML = "Please enter a search term.";
     return;
   }
 
   // clear out previous results
   document.getElementById("contactDeleteResult").innerHTML = "";
-  document.getElementById("deleteList").innerHTML = "";
-
+  
   // setting url for HTTP request and payload to be sent
   const url = urlBase + "/SearchContacts." + extension;
-  const jsonPayload = JSON.stringify({ search: name, userId: userId });
+  const tmp = { firstName:firstNameText, lastName:lastNameText, userId:userId };
+  const jsonPayload = JSON.stringify(tmp);
 
   const xhr = new XMLHttpRequest();
   xhr.open("POST", url, true);
@@ -380,14 +376,15 @@ function deleteContact()
 			</div>
 			<br>
 		`;
+
+		document.getElementById("contactDeleteResult").innerHTML = html;
     }
     
-	document.getElementById("deleteList").innerHTML = html;
 
-    if (results.length > 1) 
-	{
-      document.getElementById("contactDeleteResult").innerHTML = "Multiple matches found. Click the one you want to delete.";
-    }
+    // if (results.length > 1) 
+	// {
+    //   document.getElementById("contactDeleteResult").innerHTML = "Multiple matches found. Click the one you want to delete.";
+    // }
 
   };
   xhr.send(jsonPayload);
@@ -396,83 +393,105 @@ function deleteContact()
 function editContact()
 {
 
-  //editClearFunctions();
 
-  // Pull values from HTML inputs
-  const newFirstName = document.getElementById("firstNameText").value.trim();
-  const newLastName  = document.getElementById("lastNameText").value.trim();
-  const newPhone     = document.getElementById("phoneText").value.trim();
-  const newEmail     = document.getElementById("emailText").value.trim();
+  let firstNameText = document.getElementById("editFirstName").value.trim();
+  let lastNameText = document.getElementById("editLastName").value.trim();
 
-  const result = document.getElementById("contactAddResult");
+  // if input box is empty
+	if(firstNameText.length === 0 && lastNameText.length === 0)
+  {
+    document.getElementById("contactEditResult").innerHTML = "Please enter a search term.";
+    return;
+  }
 
-  // Build payload
-  const tmp = { userId: userId };
-  if (newFirstName) tmp.jsNewFirst = newFirstName;
-  if (newLastName)  tmp.jsNewLast  = newLastName;
-  if (newPhone)     tmp.jsNewPhone = newPhone;
-  if (newEmail)     tmp.jsNewEmail = newEmail;
-
+  // clear out previous results
+  document.getElementById("contactEditResult").innerHTML = "";
+  
+  // setting url for HTTP request and payload to be sent
+  const url = urlBase + "/SearchContacts." + extension;
+  const tmp = { firstName:firstNameText, lastName:lastNameText, userId:userId };
   const jsonPayload = JSON.stringify(tmp);
 
-  // POST request to backend
-  const url = urlBase + "/EditContact." + extension;
   const xhr = new XMLHttpRequest();
   xhr.open("POST", url, true);
   xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-
-  if (result) 
-	result.textContent = "Adding…";
-
-  xhr.onreadystatechange = function() 
+  xhr.onreadystatechange = function () 
   {
     if (this.readyState !== 4) return;
 
-    try
+    if (this.status !== 200) 
 	{
-      if (this.status === 200) 
-	  {
-        const resp = JSON.parse(xhr.responseText || "{}");
-      
-		if (resp.error)
-		{
-          if (result)
-		  { 
-			result.textContent = "Error: " + resp.error;
-          	return;
-		  }
-        }
-
-        if (result) 
-			result.textContent = "Contact added successfully.";
-
-        // Clear inputs after success
-        document.getElementById("firstNameText").value = "";
-        document.getElementById("lastNameText").value  = "";
-        document.getElementById("phoneText").value     = "";
-        document.getElementById("emailText").value     = "";
-      } 
-	  
-	  else 
-	  {
-        if (result) result.textContent = "Server error (" + this.status + ").";
-      }
-
-    } 
-	
-	catch (e) 
-	{
-      if (result) result.textContent = "Unexpected response.";
-      console.error(e);
+      document.getElementById("contactEditResult").innerHTML = "Search failed (HTTP " + this.status + ").";
+      return;
     }
-  };
 
-  xhr.onerror = function() {
-    if (result) result.textContent = "Network error.";
-  };
+    const jsonObject = JSON.parse(xhr.responseText);
 
+    if (jsonObject.error && jsonObject.error.length > 0) 
+	{
+      document.getElementById("contactEditResult").innerHTML = jsonObject.error;
+      return;
+    }
+
+    const results = jsonObject.results || [];
+    
+	if (results.length === 0) 
+	{
+      document.getElementById("contactEditResult").innerHTML = "No matching contacts found.";
+      return;
+    }
+
+    let html = "";
+
+	for (let i = 0; i < results.length; i++)
+{  
+  const entry   = String(results[i]); // e.g., "Name...<br>Email...<br>Phone...<br>ID: 8"
+  const idMatch = entry.match(/ID:\s*(\d+)/i);
+  const id      = idMatch ? idMatch[1] : null;
+
+  // pull fields (best-effort)
+  const email = (entry.match(/Email:\s*([^<\r\n]+)/i) || [])[1] || "";
+  const phone = (entry.match(/Phone:\s*([^<\r\n]+)/i) || [])[1] || "";
+  const name  = (entry.match(/Name:\s*([^<\r\n]+)/i)  || [])[1] || "";
+
+  let first = "", last = "";
+  if (name) {
+    const parts = name.trim().split(/\s+/);
+    first = parts[0] || "";
+    last  = parts.slice(1).join(" ");
+  }
+
+  // Hide the ID line from display
+  const display = entry.replace(/<br>\s*ID:\s*\d+/i, "");
+
+  html += `
+    <div class="contactRow">
+      <div>${display}</div>
+      ${
+        id
+          ? `<button class="buttons"
+                data-first="${escapeHtml(first)}"
+                data-last="${escapeHtml(last)}"
+                data-email="${escapeHtml(email)}"
+                data-phone="${escapeHtml(phone)}"
+                onclick="confirmEdit(${id}, this)">Edit</button>`
+          : ""
+      }
+    </div>
+    <br>
+  `;
+}
+document.getElementById("contactEditResult").innerHTML = html;
+
+    // if (results.length > 1) 
+	// {
+    //   document.getElementById("contactDeleteResult").innerHTML = "Multiple matches found. Click the one you want to delete.";
+    // }
+
+  };
   xhr.send(jsonPayload);
 }
+
 
 /*************************************************************HELPER FUNCTIONS****************************************************/
 
@@ -550,90 +569,132 @@ function confirmDelete(contactId)
   xhr.send(jsonPayload);
 }
 
-// text fields and results fields cleared
-/*
-function searchClearFunctions()
+function confirmEdit(contactId, btn) 
 {
-	//Add
-	document.getElementById("addContactText").value = "";
-	document.getElementById("addList").innerHTML = "";
-	document.getElementById("contactaddResult").innerHTML = "";
+  if (!contactId) 
+    return;
+  
+  // if (!confirm("Edit this contact?")) 
+  //   return;
+
+  // Close any other inline editors
+  document.querySelectorAll(".inline-editor").forEach(n => n.remove());
+
+  // Find the row the button is in
+  const row = btn.closest(".contactRow");
+  
+  if (!row) 
+    return;
+
+  // Prefill values from the button's data-*
+  const first = btn?.dataset.first || "";
+  const last  = btn?.dataset.last  || "";
+  const email = btn?.dataset.email || "";
+  const phone = btn?.dataset.phone || "";
+
+  // Build a tiny inline editor panel
+  const editor = document.createElement("div");
+ 
+  editor.className = "inline-editor";
+ 
+  editor.innerHTML = `
+    <div style="margin-top:8px; padding:10px; border:1px solid #ccc; border-radius:8px;">
+      <div style="
+        display:grid;
+        grid-template-columns:auto 1fr auto 1fr; 
+        column-gap:12px; row-gap:10px; align-items:center;">
+        
+        <label for="editFirst" >First:</label>
+        <input id="editFirst"  type="text"  class="editFirst"  value="${escapeHtml(first)}">
+
+        <label for="editLast"  >Last:</label>
+        <input id="editLast"   type="text"  class="editLast"   value="${escapeHtml(last)}">
+
+        <label for="editEmail" >Email:</label>
+        <input id="editEmail"  type="text" class="editEmail"  value="${escapeHtml(email)}">
+
+        <label for="editPhone" >Phone:</label>
+        <input id="editPhone"  type="text"  class="editPhone"  value="${escapeHtml(phone)}">
+      </div>
+
+      <div style="margin-top:10px; display:flex; gap:10px;">
+        <button class="buttons editSave">Save</button>
+        <button class="buttons editCancel">Cancel</button>
+      </div>
+    </div>
+  `;
 
 
-	// Delete
-	document.getElementById("deleteContactText").value = "";
-  	document.getElementById("deleteList").innerHTML = "";
-	document.getElementById("contactDeleteResult").innerHTML = "";
 
-	// Edit
-	document.getElementById("editContactText").value = "";
-	document.getElementById("editList").innerHTML = "";
-	document.getElementById("contactEditResult").innerHTML = "";
-	
+  // Show it directly under the contact row
+  row.appendChild(editor);
+
+  // Cancel
+  editor.querySelector(".editCancel").onclick = () => editor.remove();
+
+  // Save -> POST to EditContact.php
+  editor.querySelector(".editSave").onclick = function () 
+  {
+    const newFirst = editor.querySelector("#editFirst").value.trim();
+    const newLast  = editor.querySelector("#editLast").value.trim();
+    const newEmail = editor.querySelector("#editEmail").value.trim();
+    const newPhone = editor.querySelector("#editPhone").value.trim();
+
+    const payload = { userId, contactId };
+    if (newFirst) payload.jsNewFirst = newFirst;
+    if (newLast)  payload.jsNewLast  = newLast;
+    if (newEmail) payload.jsNewEmail = newEmail;
+    if (newPhone) payload.jsNewPhone = newPhone;
+
+    const url = urlBase + "/EditContact." + extension;
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+    xhr.onreadystatechange = function () 
+    {
+
+      if (this.readyState !== 4) 
+          return;
+      
+      const box = document.getElementById("contactEditResult");
+      
+      if (this.status === 200) 
+      {
+        if (box) 
+          box.innerHTML = "Contact updated.";
+        
+        editor.remove();
+        
+        if (typeof editContact === "function") 
+          editContact();
+      } 
+      
+      else 
+      {
+        if (box) 
+          box.innerHTML = "Update failed (HTTP " + this.status + ").";
+      }
+
+    };
+
+
+    xhr.onerror = function () 
+    {
+
+      const box = document.getElementById("contactEditResult");
+      
+      if (box) 
+        box.innerHTML = "Network error.";
+
+    };
+
+    xhr.send(JSON.stringify(payload));
+  };
 }
 
-function addClearFunctions()
+function escapeHtml(s) 
 {
-
-	// Search 
-	document.getElementById("searchText").value = "";
-	  document.getElementById("contactList").innerHTML = "";
-	document.getElementById("contactSearchResult").innerHTML = "";
-
-	// Delete
-	document.getElementById("deleteContactText").value = "";
-	document.getElementById("deleteList").innerHTML = "";
-	document.getElementById("contactDeleteResult").innerHTML = "";
-
-	// Edit
-	document.getElementById("editContactText").value = "";
-	document.getElementById("editList").innerHTML = "";
-	document.getElementById("contactEditResult").innerHTML = "";
-	
-
+  return String(s).replace(/[&<>"']/g, m => (
+    { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[m]
+  ));
 }
-
-function deleteClearFunctions()
-{
-	
-	// Search 
-	document.getElementById("searchText").value = "";
-  	document.getElementById("contactList").innerHTML = "";
-	document.getElementById("contactSearchResult").innerHTML = "";
-
-	// Add
-	document.getElementById("addContactText").value = "";
-  	document.getElementById("addList").innerHTML = "";
-	document.getElementById("contactaddResult").innerHTML = "";	
-	
-
-	// Edit
-	document.getElementById("editContactText").value = "";
-  	document.getElementById("editList").innerHTML = "";
-	document.getElementById("contactEditResult").innerHTML = "";	
-	
-
-}
-
-function editClearFunctions()
-{
-
-	// Search 
-	document.getElementById("searchText").value = "";
-  	document.getElementById("contactList").innerHTML = "";
-	document.getElementById("contactSearchResult").innerHTML = "";
-
-	// Add
-	document.getElementById("addContactText").value = "";
-    document.getElementById("addList").innerHTML = "";
-	document.getElementById("contactaddResult").innerHTML = "";	
-	
-
-	// Delete
-	document.getElementById("deleteContactText").value = "";
-  	document.getElementById("deleteList").innerHTML = "";
-	document.getElementById("contactDeleteResult").innerHTML = "";
-
-
-}
-	*/
