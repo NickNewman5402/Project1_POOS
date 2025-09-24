@@ -12,10 +12,13 @@
 	} 
 	else
 	{
-		$stmt = $conn->prepare("SELECT FirstName, LastName, Email, Phone, ID FROM Contacts WHERE FirstName LIKE ? AND UserID=?");
-		$firstLike = "%" . $inData["search"] . "%";
-		$stmt->bind_param("si", $firstLike, $inData["userId"]);
+		$firstLike = "%" . $inData["firstName"] . "%";
+		$lastLike  = "%" . $inData["lastName"] . "%";
+		
+		$stmt = $conn->prepare("SELECT FirstName, LastName, Email, Phone, ID FROM Contacts WHERE (FirstName LIKE ? AND LastName LIKE ?) AND UserID=?");
+		$stmt->bind_param("ssi", $firstLike, $lastLike, $inData["userId"]);
 		$stmt->execute();
+
 		
 		$result = $stmt->get_result();
 		
@@ -70,4 +73,5 @@
 	}
 	
 ?>
+
 

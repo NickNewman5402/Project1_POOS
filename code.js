@@ -245,7 +245,7 @@ function addContact()
   xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 
   if (result) 
-	result.textContent = "Addingâ€¦";
+	result.textContent = "Adding…";
 
   xhr.onreadystatechange = function() 
   {
@@ -697,4 +697,72 @@ function escapeHtml(s)
   return String(s).replace(/[&<>"']/g, m => (
     { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[m]
   ));
+}
+
+
+function setPanel(title, bodyHtml, statusText="") {
+  const t = document.getElementById('panelTitle');
+  const b = document.getElementById('panelBody');
+  const s = document.getElementById('panelStatus');
+  if (t) t.textContent = title;
+  if (s) s.textContent = statusText;
+  if (b) b.innerHTML = bodyHtml;
+}
+
+// ===== Simple renderers for the left nav =====
+
+function showSearch() {
+  setPanel("Search", `
+    <div class="form-grid">
+      <input id="firstNameSearch" placeholder="First Name to search" autocomplete="off">
+      <input id="lastNameSearch"  placeholder="Last Name to search"  autocomplete="off">
+    </div>
+    <div style="margin-top:12px; text-align:center;">
+      <button class="buttons" onclick="searchContact()">Search</button>
+    </div>
+    <div id="contactSearchResult"></div>
+    <div id="contactList"></div>
+  `);
+  document.getElementById('firstNameSearch')?.focus();
+}
+
+function showAdd() {
+  setPanel("Add Contact", `
+    <div class="form-grid">
+      <input id="firstNameText" placeholder="First Name" autocomplete="off">
+      <input id="lastNameText"  placeholder="Last Name"  autocomplete="off">
+      <input id="emailText"     placeholder="example@email.com" autocomplete="off">
+      <input id="phoneText"     placeholder="###-###-####" autocomplete="off">
+    </div>
+    <div style="margin-top:12px; text-align:center;">
+      <button class="buttons" onclick="addContact()">Submit New Contact</button>
+    </div>
+    <div id="contactAddResult" aria-live="polite" aria-atomic="true"></div>
+  `);
+}
+
+function showDelete() {
+  setPanel("Delete Contact", `
+    <div class="form-grid">
+      <input id="deleteFirstName" placeholder="First Name" autocomplete="off">
+      <input id="deleteLastName"  placeholder="Last Name"  autocomplete="off">
+    </div>
+    <div style="margin-top:12px; text-align:center;">
+      <button class="buttons" onclick="deleteContact()">Find Matches</button>
+    </div>
+    <div id="contactDeleteResult"></div>
+  `);
+}
+
+function showEdit() {
+  setPanel("Edit Contact", `
+    <div class="form-grid">
+      <input id="editFirstName" placeholder="First Name" autocomplete="off">
+      <input id="editLastName"  placeholder="Last Name"  autocomplete="off">
+    </div>
+    <div style="margin-top:12px; text-align:center;">
+      <button class="buttons" onclick="editContact()">Find Matches</button>
+    </div>
+    <div id="contactEditResult"></div>
+  `);
 }

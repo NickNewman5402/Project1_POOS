@@ -1,22 +1,28 @@
-body 
-{
-    background-color: #707070;
+/* Body & Background */
+body {
+    background-color: #ADD8E6; /* light blue fallback */
+    background-image: url('../images/beachBackground.png'); /* your PNG background */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: bottom center; /* bottom of the image visible */
     font-family: 'Ubuntu', sans-serif;
+    min-height: 100vh;
+    margin: 0;
 }
 
-#title 
-{
+/* Page Title */
+#title {
     font-size: 40px;
     width: 100%;
     margin: 20px auto;
     text-align: center;
-    color: #FFFFFF;
+    color: #95060A; /* header text */
 }
 
+/* Div Containers */
 #loginDiv,
 #registerDiv,
-#loggedInDiv
-{
+#loggedInDiv {
     font-size: 30px;
     width: 70%;
     max-width: 900px;
@@ -24,40 +30,7 @@ body
     padding: 0;
 }
 
-#loginName,
-#loginPassword
-{
-	font-size: 30px;
-	margin-bottom: 10px;
-}
-
-#registerDiv
-{
-	font-weight: bold;
-	color: #95060a;
-	text-align: center;
-
-}
-
-.buttons,
-#registerButton
-{
-	display: block;
-	width: 30%;
-	margin: 12px auto;
-	font-size: 25px;
-	border-radius: 25px;
-}
-
-
-.buttons:hover
-{
-    background-color: #00d5124f;
-    color: #FFFFFF;
-    opacity: 50%;
-}
-
-
+/* Login Inputs */
 #loginName,
 #loginPassword,
 #searchText,
@@ -68,91 +41,280 @@ body
 #firstName,
 #lastName,
 #login,
-#password
-{
-	font-size: 30px;
+#password {
+    font-size: 30px;
 }
 
-input[type="text"],input[type="password"]
-{
+input[type="text"], input[type="password"] {
     display: block;
     border-radius: 25px;
     text-align: center;
     width: 50%;
     margin: auto;
     font-size: 30px;
+    background-color: #FFFFFF; /* text box background */
+    color: #2d0a40; /* text color */
 }
 
-#inner-title,
-#loginResult,
-#userName,
-#userInfo
+input::placeholder {
+    color: #888888; /* placeholder text color */
+}
+
+/* Register Div */
+#registerDiv {
+    font-weight: bold;
+    color: #95060a;
+    text-align: center;
+}
+
+/* Buttons */
+.buttons,
+#registerButton {
+    display: block;
+    width: 30%;
+    margin: 12px auto;
+    font-size: 25px;
+    border-radius: 25px;
+    background-color: #ed9773; /* orange button */
+    color: #000000;            /* black text */
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.buttons:hover,
+#registerButton:hover {
+    background-color: #ffb483; /* lighter hover */
+    color: #000000;
+    opacity: 0.9;
+}
+
+/* Inner Titles & Results */
+#inner-title
 {
     display: block;
     width: 90%;
     text-align: center;
     margin: 8px auto;
-    color: #95060a;
+    font-family: inherit;
 }
-
-#userInfo
-{
-	font-size: 40px;
-	margin-bottom: 40px;
-}
-
-#userAddResult
-{
-	display: block;
-	font-size: 20px;
-	text-align: center;
-	color: #95060a;
-	font-weight: 600;
-}
-
-#loginResult
-{
-    display: inline-block;
-    font-size: 0.8em;
+#loginResult,
+#userName,
+#userInfo,
+#userAddResult,
+#contactSearchResult,
+#contactAddResult,
+#contactDeleteResult,
+#contactEditResult,
+#contactList {
+    display: block;
     width: 90%;
-    text-align: center;
-    margin-left: 5%;
-    margin-bottom: 2%;
-    font-family: 'Ubuntu', sans-serif;
+    text-align: left;
+    margin: 8px auto;
+    font-family: inherit;
+}
+
+#inner-title {
+    color: #2d0a40;
+}
+
+#loginResult,
+#userAddResult {
     color: #95060a;
+    font-weight: 600;
+    font-size: 20px;
 }
 
-#userName
-{
-    color: inherit;
+#userInfo {
+    font-size: 40px;
+    margin-bottom: 40px;
 }
 
-#logoutButton
-{
+/* Logout Button */
+#logoutButton {
     display: block;
     width: 20%;
     margin: 12px auto;
 }
 
-select
-{
+/* Select Boxes */
+select {
     display: block;
     width: 30%;
     margin: 12px auto;
     font-size: 0.75em;
 }
 
+/* Contact List */
 #contactSearchResult,
 #contactAddResult,
 #contactDeleteResult,
 #contactEditResult,
-#contactList 
-{
-  display: block;
-  width: 90%;
-  margin: 8px auto;
-  color: #141313;
-  font-weight: 700;   /* change to 400 if you don't want bold */
-  font-size: 30px;
-  font-family: inherit
+#contactList {
+    color: #141313;
+    font-weight: 700;
+    font-size: 30px;
+}
+
+.layout { 
+  display: grid; 
+  grid-template-columns: 260px 1fr; 
+  gap: 24px; 
+  max-width: 1100px; 
+  margin: 0 auto; 
+  padding: 8px 16px 40px;
+}
+.sidebar { display: grid; gap: 16px; align-content: start; }
+.content { background: rgba(255,255,255,0.12); border-radius: 12px; padding: 18px; }
+.panel-title { margin: 0 0 10px; color: #fff; font-weight: 700; }
+
+#results {
+  min-height: 320px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 18px;
+}
+
+.form-grid { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; }
+.form-grid input { font-size: 20px; padding: 8px 12px; border-radius: 10px; text-align: center; }
+
+@media (max-width: 860px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { grid-auto-flow: column; grid-auto-columns: 1fr; overflow:auto; }
+}
+
+/*********************************************/
+/* Left nav button proportions */
+.sidebar .buttons{
+  width: 220px;                /* consistent width */
+  min-height: 46px;            /* consistent height */
+  padding: 8px 14px;
+  font-size: 18px;
+  line-height: 1.2;
+  white-space: nowrap;         /* keep text on one line */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;       /* nice pill shape */
+}
+
+/* Content card */
+.card{
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 12px;
+  padding: 16px;
+}
+.card-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding-bottom:10px;
+  border-bottom:1px solid rgba(255,255,255,0.2);
+  margin-bottom:14px;
+}
+.card-head h2{ margin:0; color:#fff; }
+.muted{ color:rgba(255,255,255,0.8); font-size:14px; }
+
+/* Inner form layout */
+.form-grid{ display:grid; gap:10px; grid-template-columns:1fr 1fr; }
+.form-grid input{
+  font-size:20px; padding:8px 12px; border-radius:10px; text-align:center;
+}
+
+@media (max-width: 860px){
+  .layout{ grid-template-columns:1fr; }
+  .sidebar{ grid-auto-flow:column; grid-auto-columns:1fr; overflow:auto; }
+  .sidebar .buttons{ width:auto; min-width:160px; }
+}
+
+
+/* Edit panel container */
+.edit-card{
+  margin-top: 14px;
+  padding: 16px;
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 12px;
+}
+
+/* Two-column grid: label | input  Ã—2 */
+.edit-grid{
+  display: grid;
+  grid-template-columns: 120px minmax(260px, 1fr) 120px minmax(260px, 1fr);
+  gap: 12px 16px;
+  align-items: center;
+}
+
+/* Labels */
+.edit-grid label{
+  font-weight: 700;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Only EDIT inputs get these rules */
+.edit-grid input{
+  width: 100%;
+  font-size: 22px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  text-align: left;       /* better for long email/phone strings */
+}
+
+/* Give email/phone a little extra room on large screens */
+#editEmail { width: clamp(26ch, 40vw, 38ch); }
+#editPhone { width: clamp(14ch, 24vw, 18ch); }
+
+/* Save/Cancel row */
+.edit-actions{
+  display: grid;
+  grid-auto-flow: column;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 14px;
+}
+
+/* Responsive: stack on small screens */
+@media (max-width: 720px){
+  .edit-grid{ grid-template-columns: 120px 1fr; }
+}
+
+
+/* Visually hidden labels for screen readers */
+.visually-hidden { position: absolute; left: -9999px; }
+
+/* Center the register header */
+#registerDiv #userInfo { text-align: center; margin: 16px auto 24px; }
+
+/* Register form layout (two rows on mobile, one column per field) */
+.register-grid {
+  display: grid;
+  gap: 12px;
+  max-width: 760px;
+  margin: 0 auto 10px;
+}
+
+/* Override the global input rule ONLY inside #registerDiv */
+#registerDiv input[type="text"],
+#registerDiv input[type="password"] {
+  width: 100%;
+  max-width: 450px;
+  font-size: 22px;        /* more reasonable for forms */
+  padding: 10px 14px;
+  text-align: left;       /* better for names/usernames/password */
+  box-sizing: border-box;
+}
+
+/* Button width on this page */
+#registerDiv .buttons { width: min(520px, 80%); }
+
+/* Optional: focus ring for accessibility */
+#registerDiv :focus-visible {
+  outline: 3px solid #2d0a40;
+  outline-offset: 2px;
+  border-radius: 10px;
 }

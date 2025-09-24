@@ -1,29 +1,51 @@
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-	<title>Team 17 User Registry</title>
-	<script type="text/javascript" src="js/code.js"></script>
-	<link href="css/styles.css" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Team 17 User Registry</title>
+  <meta name="description" content="Create your Team 17 account. Enter first/last name, user ID, and password to register." />
+
+  <!-- Warm up Google Fonts & avoid FOIT -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Optional: preload your hero bg image if it’s on this page -->
+  <!-- <link rel="preload" as="image" href="images/beachBackground.png"> -->
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Defer JS so it’s not render-blocking -->
+  <script src="js/code.js" defer></script>
 </head>
 
 <body>
-	<div id="bodyDiv">
-		<form onsubmit="register(); return false;">
-			<h2 id="userInfo">Enter User Information</h2>
-			<div class="name-row">
-				<input type="text" id="firstName" placeholder="First Name">
+  <div id="registerDiv" class="register">
+    <h2 id="userInfo">Enter User Information</h2>
 
-				<input type="text" id="lastName" placeholder="Last Name">
+    <form onsubmit="doRegister(); return false;" novalidate>
+      <div class="register-grid">
+        <label for="firstName" class="visually-hidden">First Name</label>
+        <input id="firstName" type="text" placeholder="First Name"
+               autocomplete="given-name" required>
 
-				<input type="text" id="login" placeholder="User ID">
+        <label for="lastName" class="visually-hidden">Last Name</label>
+        <input id="lastName" type="text" placeholder="Last Name"
+               autocomplete="family-name" required>
 
-				<input type="text" id="password" placeholder="Password">
-			</div>
+        <label for="login" class="visually-hidden">User ID</label>
+        <input id="login" type="text" placeholder="User ID"
+               autocomplete="username" required>
 
-			<div class="button-row">
-				<button type="button" id="submit" class="buttons" onclick="doRegister();">Register User</button><br>
-				<span id="userAddResult"></span>
-			</div>
+        <label for="password" class="visually-hidden">Password</label>
+        <input id="password" type="password" placeholder="Password"
+               autocomplete="new-password" required>
+      </div>
 
+      <button id="submit" class="buttons" type="submit">Register User</button>
+      <span id="userAddResult" aria-live="polite" aria-atomic="true"></span>
+    </form>
+  </div>
 </body>
 </html>

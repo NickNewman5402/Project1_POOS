@@ -1,31 +1,49 @@
-<html>
-<head>
-	<title>TEAM 17 Contact Manager</title>
-	<script type="text/javascript" src="js/md5.js"></script>
-	<script type="text/javascript" src="js/code.js"></script>
-    <link href="css/styles.css" rel="stylesheet">	
-    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
-</head>
-<body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TEAM 17 Contact Manager</title>
+    <meta name="description" content="Contact manager — search, add, edit, and delete contacts for Team 17." />
 
-<h1 id="title">Team 17 Contact Manager</h1>
+    <!-- Warm up Google Fonts (best practice; only these two) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<div id="loginDiv">
-	<form onsubmit="doLogin(); return false;">
-	  <span id="inner-title">PLEASE LOG IN</span>
-	  <input type="text" id="loginName" placeholder="Username" autocomplete="off">
-          <input type="password" id="loginPassword" placeholder="Password" autocomplete="off"><br />
-          <button type="submit" id="loginButton" class="buttons"> Log In </button>
-	  <span id="loginResult"></span>
-	</form>
-</div>
+    <!-- Load the font with swap to prevent invisible text -->
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
 
-<div id="registerDiv">
-	<p id="registerMessage">If not registered, please register.</p>
-	<button type="register" id="registerButton" class="buttons" onclick="goRegister();">Register</button>
-	<span id="userAddResult"></span>
-	<span id="registerButtonTest"></span>
+    <!-- Preload the hero background image used by CSS -->
+    <link rel="preload" as="image" href="images/beachBackground.png">
 
-</body>
+    <!-- Your CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Your JS (use defer; keep md5 first if code.js uses it) -->
+    <script src="js/md5.js" defer></script>
+    <script src="js/code.js" defer></script>
+  </head>
+  
+  <body>
+
+    <h1 id="title">Team 17 Contact Manager</h1>
+
+    <div id="loginDiv">
+      <form onsubmit="doLogin(); return false;">
+        <span id="inner-title">PLEASE LOG IN</span>
+        <input type="text" id="loginName" placeholder="Username" autocomplete="off">
+              <input type="password" id="loginPassword" placeholder="Password" autocomplete="off"><br />
+              <button type="submit" id="loginButton" class="buttons"> Log In </button>
+        <span id="loginResult"></span>
+      </form>
+    </div>
+
+    <div id="registerDiv">
+      <p id="registerMessage">If not registered, please register.</p>
+      <button type="register" id="registerButton" class="buttons" onclick="goRegister();">Register</button>
+      <span id="userAddResult"></span>
+      <span id="registerButtonTest"></span>
+
+  </body>
 </html>
 
